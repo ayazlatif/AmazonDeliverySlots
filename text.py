@@ -9,7 +9,7 @@ CARRIERS = ['@txt.att.net','@pm.sprint.com','@tmomail.net','@vtext.com','@myboos
 def clean_up_phone(phone):
     return phone.replace("(", "").replace(")", "").replace(" ", "").replace("-","")
 
-def send_text(phone_info):
+def send_text(phone_info, message):
     email, password, phone, carrier = phone_info
     phone = clean_up_phone(phone)
     sms_address = phone + CARRIERS[carrier]
@@ -25,7 +25,7 @@ def send_text(phone_info):
     msg = MIMEMultipart()
     msg['From'] = email
     msg['To'] = sms_address
-    body = "Amazon delivery slot open! Go check your computer!\n"
+    body = "%s\n" % message
     msg.attach(MIMEText(body, 'plain'))
     sms = msg.as_string()
     server.sendmail(email, sms_address, sms)
